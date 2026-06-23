@@ -3,19 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import DatePicker from "./DatePicker";
-
-const GENRES = [
-  "Jazz",
-  "Folk",
-  "Música de autor",
-  "Rock acústico",
-  "Salsa",
-  "Tango-pop",
-  "Jazz fusión",
-  "Música romántica",
-  "Blues",
-  "Boleros",
-];
+import GenreMultiSelect from "./GenreMultiSelect";
 
 const TIME_SLOTS = (() => {
   const slots: { label: string; value: string }[] = [];
@@ -35,21 +23,9 @@ const today = new Date().toISOString().split("T")[0];
 
 export default function HeroSearch() {
   const router = useRouter();
-  const [genre, setGenre] = useState("");
-  const [genreQuery, setGenreQuery] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [genres, setGenres] = useState<string[]>([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-
-  const filteredGenres = GENRES.filter((g) =>
-    g.toLowerCase().includes(genreQuery.toLowerCase())
-  );
-
-  const handleGenreSelect = (g: string) => {
-    setGenre(g);
-    setGenreQuery(g);
-    setShowDropdown(false);
-  };
 
   const handleDateChange = (d: string) => {
     setDate(d);
@@ -59,7 +35,7 @@ export default function HeroSearch() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (genre) params.set("genero", genre);
+    if (genres.length > 0) params.set("generos", genres.join(","));
     if (date) params.set("fecha", date);
     if (date && time) params.set("hora", time);
     router.push(`/shows?${params.toString()}`);
@@ -83,7 +59,7 @@ export default function HeroSearch() {
           className="text-4xl md:text-5xl font-bold mb-4 leading-tight"
           style={{ color: "var(--color-on-background)" }}
         >
-          Encuentra tu próximo show en Bogotá
+          ¿Cuál va a ser tu siguiente show?
         </h1>
         <p className="text-base mb-10" style={{ color: "var(--color-on-surface-muted)" }}>
           Encuentra y contrata músicos alternativos en Bogotá
@@ -93,54 +69,10 @@ export default function HeroSearch() {
           onSubmit={handleSearch}
           className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full"
         >
-          {/* Genre autocomplete */}
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={genreQuery}
-              onChange={(e) => {
-                setGenreQuery(e.target.value);
-                setGenre("");
-                setShowDropdown(true);
-              }}
-              onFocus={() => setShowDropdown(true)}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-              placeholder="Género musical"
-              className="w-full px-4 py-3 rounded-xl text-sm outline-none"
-              style={{
-                backgroundColor: "var(--color-surface)",
-                color: "var(--color-on-surface)",
-              }}
-            />
-            {showDropdown && (
-              <ul
-                className="absolute z-20 w-full mt-1 rounded-xl overflow-hidden text-left text-sm shadow-lg"
-                style={{ backgroundColor: "var(--color-surface-elevated)" }}
-              >
-                {filteredGenres.length > 0 ? (
-                  filteredGenres.map((g) => (
-                    <li
-                      key={g}
-                      onMouseDown={() => handleGenreSelect(g)}
-                      className="px-4 py-2 cursor-pointer hover:opacity-80"
-                      style={{ color: "var(--color-on-surface)" }}
-                    >
-                      {g}
-                    </li>
-                  ))
-                ) : (
-                  <li className="px-4 py-2" style={{ color: "var(--color-on-surface-muted)" }}>
-                    Género no disponible
-                  </li>
-                )}
-              </ul>
-            )}
-          </div>
+          <GenreMultiSelect value={genres} onChange={setGenres} />
 
-          {/* Custom date picker */}
           <DatePicker value={date} onChange={handleDateChange} min={today} />
 
-          {/* Time slot selector */}
           <select
             value={time}
             onChange={(e) => setTime(e.target.value)}
