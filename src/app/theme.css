@@ -1,0 +1,40 @@
+@theme {
+  --color-background: #0b0d1f;
+  --color-surface: #141629;
+  --color-surface-elevated: #1c2040;
+  --color-primary: #2f52df;
+  --color-primary-hover: #2244c8;
+  --color-on-primary: #ffffff;
+  --color-brand-warm: #be1f3a;
+  --color-on-background: #ffffff;
+  --color-on-surface: #ffffff;
+  --color-on-surface-muted: #9ba3c4;
+  --font-h1: "Inter, SF Pro Display, -apple-system, sans-serif";
+  --font-h2: "Inter, SF Pro Display, -apple-system, sans-serif";
+  --font-body-md: "Inter, SF Pro Text, -apple-system, sans-serif";
+  --font-body-sm: "Inter, SF Pro Text, -apple-system, sans-serif";
+  --font-label-caps: "Inter, SF Pro Text, -apple-system, sans-serif";
+  --text-h1: 28px;
+  --text-h2: 22px;
+  --text-body-md: 16px;
+  --text-body-sm: 14px;
+  --text-label-caps: 11px;
+  --tracking-label-caps: 0.08em;
+  --font-weight-h1: 700;
+  --font-weight-h2: 600;
+  --font-weight-body-md: 400;
+  --font-weight-body-sm: 400;
+  --font-weight-label-caps: 600;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+}
+
