@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import LoginModal from "./LoginModal";
 import MusicianModal from "./MusicianModal";
 
@@ -16,8 +17,15 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold tracking-tight" style={{ color: "var(--color-on-surface)" }}>
-            Jukjam
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo-jukjam.png"
+              alt="Jukjam"
+              width={120}
+              height={36}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
 
           {/* Nav links */}
