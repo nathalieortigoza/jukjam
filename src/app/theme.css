@@ -9,6 +9,10 @@
   --color-on-background: #ffffff;
   --color-on-surface: #ffffff;
   --color-on-surface-muted: #9ba3c4;
+  --gradient-fire: linear-gradient(135deg, #FF1F1F 0%, #FF7A00 100%);
+  --gradient-sunset: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
+  --gradient-aurora: linear-gradient(135deg, #4D2DD4 0%, #9B2DC4 100%);
+  --gradient-ocean: linear-gradient(135deg, #3B6CF0 0%, #1B2E9C 100%);
   --font-h1: "Inter, SF Pro Display, -apple-system, sans-serif";
   --font-h2: "Inter, SF Pro Display, -apple-system, sans-serif";
   --font-body-md: "Inter, SF Pro Text, -apple-system, sans-serif";

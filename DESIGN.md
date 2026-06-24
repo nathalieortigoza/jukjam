@@ -17,6 +17,11 @@ colors:
   on-background: "#FFFFFF"
   on-surface: "#FFFFFF"
   on-surface-muted: "#9BA3C4"
+gradients:
+  gradient-fire: "linear-gradient(135deg, #FF1F1F 0%, #FF7A00 100%)"
+  gradient-sunset: "linear-gradient(135deg, #FF8C00 0%, #FFD700 100%)"
+  gradient-aurora: "linear-gradient(135deg, #4D2DD4 0%, #9B2DC4 100%)"
+  gradient-ocean: "linear-gradient(135deg, #3B6CF0 0%, #1B2E9C 100%)"
 typography:
   h1:
     fontFamily: "Inter, SF Pro Display, -apple-system, sans-serif"
