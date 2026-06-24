@@ -8,8 +8,11 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import DatePicker from "@/components/DatePicker";
+import LoginModal from "@/components/LoginModal";
+import RegisterModal from "@/components/RegisterModal";
 import { MUSICIANS, formatCOP } from "@/data/musicians";
 import type { Musician, ShowPackage } from "@/data/musicians";
+import { useAuth } from "@/context/AuthContext";
 
 const TIME_SLOTS = (() => {
   const slots: { label: string; value: string }[] = [];
@@ -83,11 +86,13 @@ function Steps({ current }: { current: number }) {
 
 function BookingContent({ musicianId, packageId }: { musicianId: string; packageId: string }) {
   const searchParams = useSearchParams();
+  const { user } = useAuth();
   const musician = MUSICIANS.find((m) => m.id === musicianId);
   if (!musician) notFound();
   const pkg = musician.packages.find((p) => p.id === packageId);
   if (!pkg) notFound();
 
+  const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
   const [step, setStep] = useState(1);
   const [confirmCode] = useState(generateCode);
 
@@ -100,6 +105,61 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
   const [email, setEmail] = useState("");
 
   const canSubmitStep1 = eventName.trim() && date && time && address.trim() && email.trim();
+
+  // ── Auth gate ─────────────────────────────────────────────────
+  if (!user) {
+    return (
+      <>
+        <div className="max-w-lg mx-auto py-20 px-4">
+          {/* Show summary */}
+          <div
+            className="flex items-center gap-4 p-5 rounded-2xl mb-10"
+            style={{ backgroundColor: "var(--color-surface)" }}
+          >
+            <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0">
+              <Image src={musician!.photos[0]} alt={musician!.name} fill className="object-cover" sizes="64px" />
+            </div>
+            <div>
+              <p className="text-xs mb-0.5" style={{ color: "var(--color-on-surface-muted)" }}>Reservando</p>
+              <p className="font-semibold text-base" style={{ color: "var(--color-on-surface)" }}>{pkg!.name}</p>
+              <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>{musician!.name}</p>
+            </div>
+          </div>
+
+          <h2 className="text-3xl font-bold mb-3" style={{ color: "var(--color-on-background)" }}>
+            Inicia sesión para continuar
+          </h2>
+          <p className="text-base mb-10 leading-relaxed" style={{ color: "var(--color-on-surface-muted)" }}>
+            Necesitas una cuenta para completar tu reserva.
+          </p>
+
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={() => setAuthModal("register")}
+              className="w-full py-4 rounded-full text-sm font-semibold"
+              style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
+            >
+              Crear cuenta
+            </button>
+            <button
+              onClick={() => setAuthModal("login")}
+              className="w-full py-4 rounded-full text-sm font-semibold border"
+              style={{ borderColor: "rgba(255,255,255,0.2)", color: "var(--color-on-surface)", backgroundColor: "transparent" }}
+            >
+              Ya tengo cuenta — Ingresa
+            </button>
+          </div>
+        </div>
+
+        {authModal === "login" && (
+          <LoginModal onClose={() => setAuthModal(null)} onSwitchToRegister={() => setAuthModal("register")} />
+        )}
+        {authModal === "register" && (
+          <RegisterModal onClose={() => setAuthModal(null)} onSwitchToLogin={() => setAuthModal("login")} />
+        )}
+      </>
+    );
+  }
 
   // ── Step 1: form ──────────────────────────────────────────────
   if (step === 1) {

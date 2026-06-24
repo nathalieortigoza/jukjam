@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { use } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LoginModal from "@/components/LoginModal";
+import RegisterModal from "@/components/RegisterModal";
+import { useAuth } from "@/context/AuthContext";
 import { MUSICIANS, formatCOP, ShowPackage } from "@/data/musicians";
 
 function CancellationModal({ onClose }: { onClose: () => void }) {
@@ -46,7 +49,7 @@ function CancellationModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function PackageCard({ pkg, musicianId }: { pkg: ShowPackage; musicianId: string }) {
+function PackageCard({ pkg, onBook }: { pkg: ShowPackage; onBook: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const SHORT = 120;
   const isLong = pkg.description.length > SHORT;
@@ -82,13 +85,13 @@ function PackageCard({ pkg, musicianId }: { pkg: ShowPackage; musicianId: string
         )}
       </p>
 
-      <Link
-        href={`/reserva/${musicianId}/${pkg.id}`}
-        className="block w-full py-2.5 rounded-full text-sm font-semibold text-center"
+      <button
+        onClick={onBook}
+        className="w-full py-2.5 rounded-full text-sm font-semibold"
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
       >
         Reserva ahora
-      </Link>
+      </button>
     </div>
   );
 }
@@ -98,8 +101,29 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
   const musician = MUSICIANS.find((m) => m.id === id);
   if (!musician) notFound();
 
+  const { user } = useAuth();
+  const router = useRouter();
   const [activePhoto, setActivePhoto] = useState(0);
   const [showCancellation, setShowCancellation] = useState(false);
+  const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
+  const [pendingPkgId, setPendingPkgId] = useState<string | null>(null);
+
+  // After login, navigate to booking
+  useEffect(() => {
+    if (user && pendingPkgId) {
+      router.push(`/reserva/${id}/${pendingPkgId}`);
+      setPendingPkgId(null);
+    }
+  }, [user, pendingPkgId]);
+
+  const handleBook = (pkgId: string) => {
+    if (user) {
+      router.push(`/reserva/${id}/${pkgId}`);
+    } else {
+      setPendingPkgId(pkgId);
+      setAuthModal("login");
+    }
+  };
 
   return (
     <>
@@ -242,7 +266,7 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {musician.packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} musicianId={musician.id} />
+                <PackageCard key={pkg.id} pkg={pkg} onBook={() => handleBook(pkg.id)} />
               ))}
             </div>
           </section>
@@ -332,6 +356,12 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
       </main>
 
       {showCancellation && <CancellationModal onClose={() => setShowCancellation(false)} />}
+      {authModal === "login" && (
+        <LoginModal onClose={() => setAuthModal(null)} onSwitchToRegister={() => setAuthModal("register")} />
+      )}
+      {authModal === "register" && (
+        <RegisterModal onClose={() => setAuthModal(null)} onSwitchToLogin={() => setAuthModal("login")} />
+      )}
       <Footer />
     </>
   );
