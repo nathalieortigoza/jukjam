@@ -42,40 +42,45 @@ export function cancelBooking(id: string) {
   localStorage.setItem(KEY, JSON.stringify(all));
 }
 
-// Seed mock events so the dashboard isn't empty on first load
+const MOCK_PENDING: Booking = {
+  id: "mock-1",
+  eventName: "Cena de aniversario empresa",
+  date: "2026-08-15",
+  time: "19:00",
+  address: "Cra 11 #93-52, Bogotá",
+  musicianId: "luna-llena-salsa-band",
+  musicianName: "Luna Llena Salsa Band",
+  musicianPhoto: "/musicians/luna-llena/foto-1.jpg",
+  packageName: "Show Corporativo",
+  price: 3000000,
+  confirmCode: "XKT9F2",
+  status: "pendiente",
+  createdAt: "2026-06-20",
+};
+
+const MOCK_COMPLETED: Booking = {
+  id: "mock-2",
+  eventName: "Cumpleaños de Sofía",
+  date: "2026-05-10",
+  time: "20:00",
+  address: "Cl 85 #19-12, Bogotá",
+  musicianId: "luna-llena-salsa-band",
+  musicianName: "Luna Llena Salsa Band",
+  musicianPhoto: "/musicians/luna-llena/foto-1.jpg",
+  packageName: "Show Privado",
+  price: 1800000,
+  confirmCode: "R3MZ8A",
+  status: "completado",
+  createdAt: "2026-04-28",
+};
+
 export function seedMockBookings() {
-  if (getBookings().length > 0) return;
-  const mocks: Booking[] = [
-    {
-      id: "mock-1",
-      eventName: "Cena de aniversario empresa",
-      date: "2026-08-15",
-      time: "19:00",
-      address: "Cra 11 #93-52, Bogotá",
-      musicianId: "luna-llena-salsa-band",
-      musicianName: "Luna Llena Salsa Band",
-      musicianPhoto: "/musicians/luna-llena/foto-1.jpg",
-      packageName: "Show Corporativo",
-      price: 3000000,
-      confirmCode: "XKT9F2",
-      status: "pendiente",
-      createdAt: "2026-06-20",
-    },
-    {
-      id: "mock-2",
-      eventName: "Cumpleaños de Sofía",
-      date: "2026-05-10",
-      time: "20:00",
-      address: "Cl 85 #19-12, Bogotá",
-      musicianId: "luna-llena-salsa-band",
-      musicianName: "Luna Llena Salsa Band",
-      musicianPhoto: "/musicians/luna-llena/foto-1.jpg",
-      packageName: "Show Privado",
-      price: 1800000,
-      confirmCode: "R3MZ8A",
-      status: "completado",
-      createdAt: "2026-04-28",
-    },
-  ];
-  localStorage.setItem(KEY, JSON.stringify(mocks));
+  const all = getBookings();
+  const hasMock1 = all.some((b) => b.id === "mock-1");
+  const hasMock2 = all.some((b) => b.id === "mock-2");
+  if (hasMock1 && hasMock2) return;
+  const updated = [...all];
+  if (!hasMock2) updated.push(MOCK_COMPLETED);
+  if (!hasMock1) updated.unshift(MOCK_PENDING);
+  localStorage.setItem(KEY, JSON.stringify(updated));
 }

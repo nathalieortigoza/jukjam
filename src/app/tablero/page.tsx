@@ -47,37 +47,105 @@ function CancelModal({ booking, onConfirm, onClose }: {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-sm rounded-3xl p-8 text-center" style={{ backgroundColor: "var(--color-surface)" }}>
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="w-14 h-14 rounded-2xl" style={{ overflow: "hidden" }}>
-            <Image src={booking.musicianPhoto} alt={booking.musicianName} width={56} height={56} className="w-full h-full object-cover" />
-          </div>
-          <div className="flex gap-1">
-            {[0,1,2].map(i => (
-              <div key={i} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: i === 1 ? "#BE1F3A" : "var(--color-on-surface-muted)", opacity: i === 1 ? 1 : 0.4 }} />
-            ))}
-          </div>
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ backgroundColor: fullRefund ? "rgba(0,197,116,0.15)" : "rgba(190,31,58,0.12)" }}>
-            <svg className="w-7 h-7" fill="none" stroke={fullRefund ? "#00C574" : "#BE1F3A"} strokeWidth={1.5} viewBox="0 0 24 24">
-              <path d="M9 14l-4-4 4-4M5 10h14M15 10l4 4-4 4" />
-            </svg>
+
+      <div
+        className="relative w-full max-w-3xl rounded-2xl flex"
+        style={{ backgroundColor: "var(--color-surface)", minHeight: "480px", overflow: "hidden" }}
+      >
+        {/* Left panel — image */}
+        <div className="hidden md:flex relative w-2/5 shrink-0 flex-col justify-end p-8">
+          <Image
+            src="/cancel-collage.png"
+            alt="Cancelación Jukjam"
+            fill
+            className="object-cover object-center"
+            sizes="320px"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to top, rgba(11,13,31,0.95) 0%, rgba(190,31,58,0.4) 55%, rgba(47,82,223,0.2) 100%)" }}
+          />
+          <div className="relative z-10">
+            <p className="text-2xl font-bold leading-snug mb-2" style={{ color: "#fff" }}>
+              Tu música,<br />protegida.
+            </p>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
+              Cancelaciones flexibles para que reserves con tranquilidad.
+            </p>
           </div>
         </div>
 
-        <h2 className="text-xl font-bold mb-1" style={{ color: "var(--color-on-surface)" }}>¿Cancelar reserva?</h2>
-        <p className="text-sm mb-5" style={{ color: "var(--color-on-surface-muted)" }}>{booking.eventName} · {booking.musicianName}</p>
+        {/* Right panel */}
+        <div className="flex-1 flex flex-col justify-center px-8 py-10">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
+            style={{ color: "var(--color-on-surface-muted)", backgroundColor: "var(--color-surface-elevated)" }}
+          >
+            ×
+          </button>
 
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-7"
-          style={{ backgroundColor: fullRefund ? "rgba(0,197,116,0.15)" : "rgba(190,31,58,0.12)", color: fullRefund ? "#00C574" : "#BE1F3A" }}>
-          {fullRefund ? "✓" : "⚠"} Devolución del {refundPct}% · {formatCOP(booking.price * refundPct / 100)}
+          <h2 className="text-2xl font-bold mb-1" style={{ color: "var(--color-on-surface)" }}>
+            Políticas de cancelación
+          </h2>
+          <p className="text-sm mb-8" style={{ color: "var(--color-on-surface-muted)" }}>
+            {booking.eventName} · {booking.musicianName}
+          </p>
+
+          <div className="space-y-3 mb-8">
+            <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
+              <span className="text-base mt-0.5 shrink-0">✅</span>
+              <div>
+                <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>+7 días de anticipación</p>
+                <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Devolución del <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> del valor pagado.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
+              <span className="text-base mt-0.5 shrink-0">⚠️</span>
+              <div>
+                <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>Menos de 7 días</p>
+                <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Penalización del 40%, devolución del <strong style={{ color: "var(--color-on-surface)" }}>60%</strong>.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
+              <span className="text-base mt-0.5 shrink-0">🎵</span>
+              <div>
+                <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>Si cancela el músico</p>
+                <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Devolución del <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> garantizada.</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl mb-6"
+            style={{ backgroundColor: fullRefund ? "rgba(0,197,116,0.12)" : "rgba(190,31,58,0.1)" }}
+          >
+            <span className="text-lg">{fullRefund ? "✅" : "⚠️"}</span>
+            <div>
+              <p className="text-sm font-semibold" style={{ color: fullRefund ? "#00C574" : "#BE1F3A" }}>
+                Tu devolución: {formatCOP(booking.price * refundPct / 100)} ({refundPct}%)
+              </p>
+              <p className="text-xs" style={{ color: "var(--color-on-surface-muted)" }}>
+                {fullRefund ? "Faltan más de 7 días para el evento." : "Faltan menos de 7 días para el evento."}
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onConfirm}
+            className="w-full py-3.5 rounded-full text-sm font-semibold mb-3 transition-opacity hover:opacity-90"
+            style={{ backgroundColor: "#BE1F3A", color: "#fff" }}
+          >
+            Confirmar cancelación
+          </button>
+          <button
+            onClick={onClose}
+            className="w-full text-sm py-2 transition-opacity hover:opacity-70"
+            style={{ color: "var(--color-on-surface-muted)" }}
+          >
+            Volver
+          </button>
         </div>
-
-        <button onClick={onConfirm} className="w-full py-3.5 rounded-full text-sm font-semibold mb-3" style={{ backgroundColor: "#BE1F3A", color: "#fff" }}>
-          Confirmar cancelación
-        </button>
-        <button onClick={onClose} className="w-full text-sm py-2" style={{ color: "var(--color-on-surface-muted)" }}>
-          Volver
-        </button>
       </div>
     </div>
   );
@@ -164,47 +232,59 @@ export default function TabladerPage() {
           </div>
 
           {/* Top nav */}
-          <div className="flex gap-1 mb-8 p-1 rounded-xl w-fit" style={{ backgroundColor: "var(--color-surface)" }}>
-            {(["eventos", "seguidos"] as Section[]).map((s) => (
+          <div className="flex gap-1 mb-8 p-1.5 rounded-2xl w-fit" style={{ backgroundColor: "var(--color-surface)" }}>
+            {([{ key: "eventos", label: "Mis Eventos" }, { key: "seguidos", label: "Seguidos" }] as { key: Section; label: string }[]).map(({ key, label }) => (
               <button
-                key={s}
-                onClick={() => setSection(s)}
-                className="px-5 py-2 rounded-lg text-sm font-medium capitalize transition-all"
+                key={key}
+                onClick={() => setSection(key)}
+                className="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all"
                 style={{
-                  backgroundColor: section === s ? "var(--color-surface-elevated)" : "transparent",
-                  color: section === s ? "var(--color-on-surface)" : "var(--color-on-surface-muted)",
+                  backgroundColor: section === key ? "var(--color-primary)" : "transparent",
+                  color: section === key ? "var(--color-on-primary)" : "var(--color-on-surface-muted)",
                 }}
               >
-                {s === "eventos" ? "Mis Eventos" : "Seguidos"}
+                {label}
               </button>
             ))}
-            <Link href="/shows" className="px-5 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-80" style={{ color: "var(--color-on-surface-muted)" }}>
-              Catálogo
-            </Link>
           </div>
 
           {/* Eventos */}
           {section === "eventos" && (
             <div>
-              <div className="flex gap-1 mb-6 p-1 rounded-xl w-fit" style={{ backgroundColor: "var(--color-surface)" }}>
-                {EVENT_TABS.map(({ key, label }) => (
-                  <button
-                    key={key}
-                    onClick={() => setEventTab(key)}
-                    className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style={{
-                      backgroundColor: eventTab === key ? "var(--color-surface-elevated)" : "transparent",
-                      color: eventTab === key ? "var(--color-on-surface)" : "var(--color-on-surface-muted)",
-                    }}
-                  >
-                    {label}
-                    {key === "pendiente" && bookings.filter((b) => b.status === "pendiente").length > 0 && (
-                      <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full" style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}>
-                        {bookings.filter((b) => b.status === "pendiente").length}
-                      </span>
-                    )}
-                  </button>
-                ))}
+              <div className="flex gap-1 mb-6 p-1.5 rounded-2xl w-fit" style={{ backgroundColor: "var(--color-surface)" }}>
+                {EVENT_TABS.map(({ key, label }) => {
+                  const TAB_COLORS: Record<BookingStatus, { active: string; text: string }> = {
+                    pendiente:  { active: "var(--color-primary)", text: "var(--color-on-primary)" },
+                    completado: { active: "#00C574",              text: "#0B0D1F"                 },
+                    cancelado:  { active: "#BE1F3A",              text: "#fff"                    },
+                  };
+                  const tc = TAB_COLORS[key];
+                  const count = bookings.filter((b) => b.status === key).length;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => setEventTab(key)}
+                      className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5"
+                      style={{
+                        backgroundColor: eventTab === key ? tc.active : "transparent",
+                        color: eventTab === key ? tc.text : "var(--color-on-surface-muted)",
+                      }}
+                    >
+                      {label}
+                      {count > 0 && (
+                        <span
+                          className="text-xs px-1.5 py-0.5 rounded-full font-bold"
+                          style={{
+                            backgroundColor: eventTab === key ? "rgba(0,0,0,0.2)" : tc.active,
+                            color: eventTab === key ? tc.text : tc.text,
+                          }}
+                        >
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               {filtered.length > 0 ? (
