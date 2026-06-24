@@ -9,19 +9,19 @@ const STEPS = [
     num: "01",
     icon: "/icons/calendar.png",
     text: "Elige el género, la fecha y la hora del evento.",
-    accent: "var(--color-primary)",
+    color: "var(--color-primary)",
   },
   {
     num: "02",
     icon: "/icons/money.png",
     text: "Confirma los datos y haz el pago.",
-    accent: "var(--color-primary)",
+    color: "#BE1F3A",
   },
   {
     num: "03",
     icon: "/icons/party.png",
     text: "Disfruta el evento con tu gente.",
-    accent: "var(--color-brand-warm)",
+    color: "#9B2DC4",
   },
 ];
 
@@ -32,80 +32,76 @@ export default function ComoFunciona() {
     <section
       style={{
         backgroundColor: "var(--color-background)",
-        padding: "80px 32px 72px",
-        fontFamily: "var(--font-quicksand), Inter, -apple-system, sans-serif",
+        padding: "72px 32px 64px",
+        fontFamily: "var(--font-quicksand), Quicksand, -apple-system, sans-serif",
       }}
     >
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
 
-        {/* Título estilo hero */}
-        <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--color-on-surface-muted)", marginBottom: 16, textAlign: "center" }}>
-          Guía rápida
-        </p>
-        <h2
-          style={{
-            fontSize: "clamp(28px, 4vw, 48px)",
-            fontWeight: 700,
-            lineHeight: 1.2,
-            marginBottom: 56,
-            textAlign: "center",
-            color: "var(--color-on-background)",
-          }}
-        >
-          ¿Cómo{" "}
-          <span style={{ color: "var(--color-primary)" }}>funciona?</span>
+        {/* Título */}
+        <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, lineHeight: 1.2, marginBottom: 56, textAlign: "center", color: "var(--color-on-background)" }}>
+          ¿Cómo <span style={{ color: "var(--color-primary)" }}>funciona?</span>
         </h2>
 
-        {/* Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 32 }}>
+        {/* Pasos */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr auto 1fr", alignItems: "start", gap: 0, marginBottom: 40 }}>
           {STEPS.map((step, i) => (
-            <div
-              key={step.num}
-              style={{
-                position: "relative",
-                borderRadius: 16,
-                padding: "32px 28px 28px",
-                backgroundColor: "var(--color-surface)",
-                borderTop: `3px solid ${step.accent}`,
-                display: "flex",
-                flexDirection: "column",
-                gap: 20,
-                minHeight: 220,
-              }}
-            >
-              {/* Arrow between cards */}
+            <>
+              {/* Paso */}
+              <div key={step.num} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 16, padding: "0 12px" }}>
+                {/* Círculo con ícono */}
+                <div style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: "50%",
+                  backgroundColor: "var(--color-surface)",
+                  border: `2px solid ${step.color}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}>
+                  <Image src={step.icon} alt="" width={36} height={36} style={{ objectFit: "contain" }} />
+                </div>
+
+                {/* Número */}
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: step.color }}>
+                  PASO {step.num}
+                </span>
+
+                {/* Texto */}
+                <p style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.5, color: "var(--color-on-surface)", margin: 0 }}>
+                  {step.text}
+                </p>
+              </div>
+
+              {/* Flecha entre pasos */}
               {i < STEPS.length - 1 && (
-                <div style={{ position: "absolute", right: -22, top: "50%", transform: "translateY(-50%)", zIndex: 2, color: "var(--color-on-surface-muted)", fontSize: 20 }}>
+                <div key={`arrow-${i}`} style={{ paddingTop: 36, color: "var(--color-on-surface-muted)", fontSize: 20, opacity: 0.4, flexShrink: 0 }}>
                   →
                 </div>
               )}
-
-              <span style={{ fontSize: 48, fontWeight: 900, lineHeight: 1, color: step.accent, opacity: 0.25 }}>
-                {step.num}
-              </span>
-
-              <Image src={step.icon} alt="" width={28} height={28} style={{ objectFit: "contain" }} />
-
-              <p style={{ fontSize: 15, lineHeight: 1.5, color: "var(--color-on-surface)", margin: 0 }}>
-                {step.text}
-              </p>
-            </div>
+            </>
           ))}
         </div>
 
-        {/* Tagline */}
-        <p style={{ fontSize: 13, color: "var(--color-on-surface-muted)", marginBottom: 24, textAlign: "center" }}>
-          Proceso 100% en línea &nbsp;·&nbsp; Sin complicaciones
-        </p>
+        {/* Nota cancelación */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "14px 24px", borderRadius: 999, backgroundColor: "var(--color-surface)", border: "1px solid rgba(255,255,255,0.1)" }}>
+            <Image src="/icons/info.png" alt="" width={20} height={20} style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+            <p style={{ fontSize: 15, fontWeight: 600, color: "var(--color-on-surface)", margin: 0 }}>
+              ¿Tuviste que cancelar?{" "}
+              <button
+                onClick={() => setShowPolicy(true)}
+                style={{ color: "var(--color-primary)", fontWeight: 700, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", fontSize: 15 }}
+              >
+                Revisa nuestra política.
+              </button>
+            </p>
+          </div>
 
-        {/* Cancellation note */}
-        <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "16px 20px", borderRadius: 12, backgroundColor: "var(--color-surface)", borderLeft: "3px solid var(--color-brand-warm)", maxWidth: 480, margin: "0 auto" }}>
-          <Image src="/icons/info.png" alt="" width={18} height={18} style={{ objectFit: "contain", flexShrink: 0, marginTop: 1, opacity: 0.7 }} />
-          <p style={{ fontSize: 13, color: "var(--color-on-surface-muted)", margin: 0, lineHeight: 1.5 }}>
-            ¿Tuviste que cancelar?{" "}
-            <button onClick={() => setShowPolicy(true)} style={{ color: "var(--color-primary)", fontWeight: 600, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", fontSize: 13 }}>
-              Revisa nuestra política de cancelación.
-            </button>
+          <p style={{ fontSize: 13, color: "var(--color-on-surface-muted)", margin: 0, letterSpacing: "0.04em" }}>
+            Proceso fácil &nbsp;·&nbsp; En línea &nbsp;·&nbsp; Sin complicaciones
           </p>
         </div>
 
