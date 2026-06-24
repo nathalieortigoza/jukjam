@@ -6,11 +6,9 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import MusicianModal from "./MusicianModal";
-
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const [modal, setModal] = useState<"login" | "register" | "musician" | null>(null);
+  const [modal, setModal] = useState<"login" | "register" | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -122,13 +120,13 @@ export default function Navbar() {
                 >
                   Crear cuenta
                 </button>
-                <button
-                  onClick={() => setModal("musician")}
+                <Link
+                  href="/registrate-musico"
                   className="text-sm font-semibold px-4 py-2 rounded-full transition-opacity hover:opacity-90"
                   style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
                 >
                   Regístrate como músico
-                </button>
+                </Link>
               </>
             )}
           </div>
@@ -140,9 +138,6 @@ export default function Navbar() {
       )}
       {modal === "register" && (
         <RegisterModal onClose={() => setModal(null)} onSwitchToLogin={() => setModal("login")} />
-      )}
-      {modal === "musician" && (
-        <MusicianModal onClose={() => setModal(null)} />
       )}
     </>
   );

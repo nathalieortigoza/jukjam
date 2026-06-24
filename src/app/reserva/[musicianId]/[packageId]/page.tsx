@@ -251,6 +251,8 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="tu@correo.com"
+                required
+                pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
                 className="w-full px-4 py-3 rounded-xl text-sm outline-none"
                 style={{ backgroundColor: "var(--color-surface)", color: "var(--color-on-surface)" }}
               />

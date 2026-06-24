@@ -43,9 +43,9 @@ export default function GenreMultiSelect({ value, onChange }: GenreMultiSelectPr
   );
 
   const toggle = (g: string) => {
-    setPending((prev) =>
-      prev.includes(g) ? prev.filter((x) => x !== g) : [...prev, g]
-    );
+    const next = pending.includes(g) ? pending.filter((x) => x !== g) : [...pending, g];
+    setPending(next);
+    onChange(next);
   };
 
   const apply = () => {
@@ -55,6 +55,7 @@ export default function GenreMultiSelect({ value, onChange }: GenreMultiSelectPr
 
   const clear = () => {
     setPending([]);
+    onChange([]);
   };
 
   const label =

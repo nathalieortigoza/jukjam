@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import MusicianCard from "@/components/MusicianCard";
 import GenreMultiSelect from "@/components/GenreMultiSelect";
 import DatePicker from "@/components/DatePicker";
+import Image from "next/image";
 import { MUSICIANS, Musician } from "@/data/musicians";
 
 const TIME_SLOTS = (() => {
@@ -176,20 +177,25 @@ function CatalogContent() {
 
           {/* Results */}
           {paginated.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-24 text-center">
-              <p className="text-lg mb-6" style={{ color: "var(--color-on-surface-muted)" }}>
-                Lo sentimos :( no encontramos shows asociados a tu búsqueda.<br />
-                Puedes cambiar el filtro y buscar de nuevo.
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: 48, paddingBottom: 80, textAlign: "center" }}>
+              <Image
+                src="/empty-search.png"
+                alt="No se encontraron artistas"
+                width={200}
+                height={200}
+                style={{ objectFit: "contain", marginBottom: 32, opacity: 0.9 }}
+              />
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8, color: "var(--color-on-surface)" }}>
+                Lo sentimos, no encontramos artistas
+              </h3>
+              <p style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 28, color: "var(--color-on-surface-muted)", maxWidth: 340 }}>
+                No hay músicos disponibles para los criterios seleccionados. Cambia los filtros para encontrar más artistas.
               </p>
               <button
                 onClick={clearFilters}
-                className="px-6 py-3 rounded-full text-sm font-semibold"
-                style={{
-                  backgroundColor: "var(--color-primary)",
-                  color: "var(--color-on-primary)",
-                }}
+                style={{ padding: "12px 28px", borderRadius: 999, fontSize: 14, fontWeight: 600, backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)", border: "none", cursor: "pointer" }}
               >
-                Limpiar filtros
+                Cambiar criterios de búsqueda
               </button>
             </div>
           ) : (

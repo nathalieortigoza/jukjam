@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Jukjam — Música alternativa para tus eventos",
   description:
-    "Encontrá y contratá músicos alternativos en Colombia. Jazz, folk, música de autor, rock acústico y más.",
+    "Encuentra y contrata músicos alternativos en Colombia. Jazz, folk, música de autor, rock acústico y más.",
 };
 
 export default function RootLayout({
