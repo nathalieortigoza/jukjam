@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import CancelPolicyModal from "./CancelPolicyModal";
 
 const STEPS = [
   {
@@ -25,6 +26,8 @@ const STEPS = [
 ];
 
 export default function ComoFunciona() {
+  const [showPolicy, setShowPolicy] = useState(false);
+
   return (
     <section
       style={{
@@ -100,13 +103,15 @@ export default function ComoFunciona() {
           <Image src="/icons/info.png" alt="" width={18} height={18} style={{ objectFit: "contain", flexShrink: 0, marginTop: 1, opacity: 0.7 }} />
           <p style={{ fontSize: 13, color: "var(--color-on-surface-muted)", margin: 0, lineHeight: 1.5 }}>
             ¿Tuviste que cancelar?{" "}
-            <Link href="/tablero" style={{ color: "var(--color-primary)", fontWeight: 600, textDecoration: "underline" }}>
+            <button onClick={() => setShowPolicy(true)} style={{ color: "var(--color-primary)", fontWeight: 600, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit", fontSize: 13 }}>
               Revisa nuestra política de cancelación.
-            </Link>
+            </button>
           </p>
         </div>
 
       </div>
+
+      {showPolicy && <CancelPolicyModal onClose={() => setShowPolicy(false)} />}
     </section>
   );
 }
