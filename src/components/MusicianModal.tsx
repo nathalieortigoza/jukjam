@@ -153,7 +153,7 @@ export default function MusicianModal({ onClose }: MusicianModalProps) {
                       type="tel"
                       inputMode="numeric"
                       value={celular}
-                      onChange={(e) => setCelular(e.target.value.replace(/\D/g, ""))}
+                      onChange={(e) => setCelular(e.target.value.replace(/\D/g, "").slice(0, 10))} maxLength={10}
                       required
                       placeholder="3001234567"
                       className="flex-1 rounded-xl px-4 py-3 text-sm outline-none"

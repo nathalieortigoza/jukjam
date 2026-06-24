@@ -95,21 +95,21 @@ function CancelModal({ booking, onConfirm, onClose }: {
 
           <div className="space-y-3 mb-8">
             <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
-              <span className="text-base mt-0.5 shrink-0">✅</span>
+              <Image src="/icons/money.png" alt="" width={22} height={22} style={{ objectFit: "contain", flexShrink: 0, marginTop: 2 }} />
               <div>
                 <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>+7 días de anticipación</p>
                 <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Devolución del <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> del valor pagado.</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
-              <span className="text-base mt-0.5 shrink-0">⚠️</span>
+              <Image src="/icons/info.png" alt="" width={22} height={22} style={{ objectFit: "contain", flexShrink: 0, marginTop: 2 }} />
               <div>
                 <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>Menos de 7 días</p>
                 <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Penalización del 40%, devolución del <strong style={{ color: "var(--color-on-surface)" }}>60%</strong>.</p>
               </div>
             </div>
             <div className="flex items-start gap-3 p-4 rounded-2xl" style={{ backgroundColor: "var(--color-surface-elevated)" }}>
-              <span className="text-base mt-0.5 shrink-0">🎵</span>
+              <Image src="/icons/sing.png" alt="" width={22} height={22} style={{ objectFit: "contain", flexShrink: 0, marginTop: 2 }} />
               <div>
                 <p className="text-sm font-semibold mb-0.5" style={{ color: "var(--color-on-surface)" }}>Si cancela el músico</p>
                 <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>Devolución del <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> garantizada.</p>
@@ -121,7 +121,7 @@ function CancelModal({ booking, onConfirm, onClose }: {
             className="flex items-center gap-3 px-4 py-3 rounded-2xl mb-6"
             style={{ backgroundColor: fullRefund ? "rgba(0,197,116,0.12)" : "rgba(190,31,58,0.1)" }}
           >
-            <span className="text-lg">{fullRefund ? "✅" : "⚠️"}</span>
+            <Image src={fullRefund ? "/icons/money.png" : "/icons/info.png"} alt="" width={22} height={22} style={{ objectFit: "contain", flexShrink: 0 }} />
             <div>
               <p className="text-sm font-semibold" style={{ color: fullRefund ? "#00C574" : "#BE1F3A" }}>
                 Tu devolución: {formatCOP(booking.price * refundPct / 100)} ({refundPct}%)
@@ -257,7 +257,7 @@ function ReviewModal({ booking, onClose, onDone }: {
             </>
           ) : (
             <div className="text-center">
-              <div className="text-5xl mb-6">🎉</div>
+              <Image src="/icons/party.png" alt="" width={72} height={72} style={{ objectFit: "contain", marginBottom: 24 }} />
               <h2 className="text-2xl font-bold mb-3" style={{ color: "var(--color-on-surface)" }}>¡Tu calificación<br />ha sido enviada!</h2>
               <p className="text-sm mb-10" style={{ color: "var(--color-on-surface-muted)" }}>Gracias por compartir tu experiencia con la comunidad Jukjam.</p>
               <Link

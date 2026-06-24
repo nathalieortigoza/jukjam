@@ -419,7 +419,7 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
         <Image src={musician.photos[0]} alt={musician.name} fill className="object-cover" sizes="96px" />
       </div>
 
-      <div className="text-4xl mb-4">🎉</div>
+      <Image src="/icons/party.png" alt="" width={64} height={64} style={{ objectFit: "contain", marginBottom: 16 }} />
       <h2 className="text-3xl font-bold mb-2" style={{ color: "var(--color-on-background)" }}>
         ¡Felicitaciones!
       </h2>
@@ -433,19 +433,20 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
       >
         {(
           [
-            ["Músico", musician.name],
-            ["Show", pkg.name],
-            ["Fecha", formatDate(date)],
-            ["Hora", formatTime(time)],
-            ["Lugar", address],
-          ] as [string, string][]
-        ).map(([label, val], i, arr) => (
+            { icon: "/icons/musician.png", label: "Músico",  val: musician.name   },
+            { icon: "/icons/sing.png",     label: "Show",    val: pkg.name         },
+            { icon: "/icons/calendar.png", label: "Fecha",   val: formatDate(date) },
+            { icon: "/icons/call.png",     label: "Hora",    val: formatTime(time) },
+            { icon: "/icons/info.png",     label: "Lugar",   val: address          },
+          ]
+        ).map(({ icon, label, val }, i, arr) => (
           <div
             key={label}
             className="flex gap-4 px-6 py-4"
-            style={{ borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}
+            style={{ borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", alignItems: "center" }}
           >
-            <span className="text-sm w-24 shrink-0" style={{ color: "var(--color-on-surface-muted)" }}>{label}</span>
+            <Image src={icon} alt="" width={18} height={18} style={{ objectFit: "contain", flexShrink: 0, opacity: 0.6 }} />
+            <span className="text-sm w-20 shrink-0" style={{ color: "var(--color-on-surface-muted)" }}>{label}</span>
             <span className="text-sm font-medium" style={{ color: "var(--color-on-surface)" }}>{val}</span>
           </div>
         ))}

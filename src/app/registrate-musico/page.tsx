@@ -47,7 +47,7 @@ function ThanksModal({ onClose }: { onClose: () => void }) {
     <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
       <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)" }} onClick={onClose} />
       <div style={{ position: "relative", width: "100%", maxWidth: 360, borderRadius: 24, padding: "40px 32px", textAlign: "center", backgroundColor: "var(--color-surface)" }}>
-        <div style={{ fontSize: 48, marginBottom: 20 }}>🎵</div>
+        <Image src="/icons/sing.png" alt="" width={72} height={72} style={{ objectFit: "contain", marginBottom: 20 }} />
         <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 12, color: "var(--color-on-surface)" }}>¡Tu postulación<br />fue enviada!</h2>
         <p style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 32, color: "var(--color-on-surface-muted)" }}>
           Revisaremos tu información y nos comunicaremos contigo dentro de los siguientes{" "}
@@ -122,7 +122,7 @@ export default function RegistrateMusico() {
                 <select value={countryCode} onChange={(e) => setCountryCode(e.target.value)} style={{ ...fieldStyle, width: "auto" }}>
                   {COUNTRY_CODES.map((c) => <option key={c.code} value={c.code}>{c.label}</option>)}
                 </select>
-                <input type="tel" inputMode="numeric" value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/\D/g, ""))} required placeholder="3001234567" style={{ ...fieldStyle, flex: 1 }} />
+                <input type="tel" inputMode="numeric" value={telefono} onChange={(e) => setTelefono(e.target.value.replace(/\D/g, "").slice(0, 10))} required maxLength={10} placeholder="3001234567" style={{ ...fieldStyle, flex: 1 }} />
               </div>
             </Field>
 
@@ -180,13 +180,13 @@ export default function RegistrateMusico() {
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-on-surface-muted)", marginBottom: 16 }}>¿Por qué Jukjam?</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[
-                  { icon: "🎵", text: "Recibe contratos sin hacer mercadeo" },
-                  { icon: "💰", text: "Precios fijos — sin regateos ni malentendidos" },
-                  { icon: "✅", text: "Pago garantizado al confirmar el show con tu código" },
-                  { icon: "📊", text: "Comisión del 10% solo al completar el servicio" },
+                  { icon: "/icons/sing.png",   text: "Recibe contratos sin hacer mercadeo" },
+                  { icon: "/icons/money.png",  text: "Precios fijos — sin regateos ni malentendidos" },
+                  { icon: "/icons/bell.png",   text: "Pago garantizado al confirmar el show con tu código" },
+                  { icon: "/icons/info.png",   text: "Comisión del 10% solo al completar el servicio" },
                 ].map(({ icon, text }) => (
                   <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <span style={{ fontSize: 18 }}>{icon}</span>
+                    <Image src={icon} alt="" width={24} height={24} style={{ objectFit: "contain", flexShrink: 0, marginTop: 1 }} />
                     <p style={{ fontSize: 13, lineHeight: 1.5, color: "var(--color-on-surface-muted)" }}>{text}</p>
                   </div>
                 ))}
