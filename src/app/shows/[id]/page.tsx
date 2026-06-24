@@ -107,6 +107,21 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
   const [showCancellation, setShowCancellation] = useState(false);
   const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
   const [pendingPkgId, setPendingPkgId] = useState<string | null>(null);
+  const [following, setFollowing] = useState(false);
+
+  useEffect(() => {
+    const stored: string[] = JSON.parse(localStorage.getItem("jukjam_following") ?? "[]");
+    setFollowing(stored.includes(id));
+  }, [id]);
+
+  const toggleFollow = () => {
+    const stored: string[] = JSON.parse(localStorage.getItem("jukjam_following") ?? "[]");
+    const updated = following
+      ? stored.filter((x) => x !== id)
+      : [...stored, id];
+    localStorage.setItem("jukjam_following", JSON.stringify(updated));
+    setFollowing(!following);
+  };
 
   // After login, navigate to booking
   useEffect(() => {
@@ -173,14 +188,15 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
                   <p className="text-xs" style={{ color: "var(--color-on-surface-muted)" }}>Shows en Jukjam</p>
                 </div>
                 <button
-                  className="px-5 py-2 rounded-full text-sm font-semibold border transition-opacity hover:opacity-80"
+                  onClick={toggleFollow}
+                  className="px-5 py-2 rounded-full text-sm font-semibold border transition-all hover:opacity-80"
                   style={{
                     borderColor: "var(--color-primary)",
-                    color: "var(--color-primary)",
-                    backgroundColor: "transparent",
+                    color: following ? "var(--color-on-primary)" : "var(--color-primary)",
+                    backgroundColor: following ? "var(--color-primary)" : "transparent",
                   }}
                 >
-                  Seguir
+                  {following ? "Siguiendo" : "Seguir"}
                 </button>
               </div>
             </div>

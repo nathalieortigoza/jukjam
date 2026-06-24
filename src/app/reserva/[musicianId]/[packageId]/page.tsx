@@ -13,6 +13,7 @@ import RegisterModal from "@/components/RegisterModal";
 import { MUSICIANS, formatCOP } from "@/data/musicians";
 import type { Musician, ShowPackage } from "@/data/musicians";
 import { useAuth } from "@/context/AuthContext";
+import { saveBooking } from "@/data/bookings";
 
 const TIME_SLOTS = (() => {
   const slots: { label: string; value: string }[] = [];
@@ -369,7 +370,24 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
               </div>
 
               <button
-                onClick={() => setStep(4)}
+                onClick={() => {
+                  saveBooking({
+                    id: confirmCode,
+                    eventName,
+                    date,
+                    time,
+                    address,
+                    musicianId: musician!.id,
+                    musicianName: musician!.name,
+                    musicianPhoto: musician!.photos[0],
+                    packageName: pkg!.name,
+                    price: pkg!.price,
+                    confirmCode,
+                    status: "pendiente",
+                    createdAt: new Date().toISOString().split("T")[0],
+                  });
+                  setStep(4);
+                }}
                 className="w-full py-4 rounded-full text-base font-bold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "#00C574", color: "#fff" }}
               >

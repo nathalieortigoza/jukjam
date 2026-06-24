@@ -128,8 +128,9 @@ export default function LoginModal({ onClose, onSwitchToRegister }: LoginModalPr
                   </select>
                   <input
                     type="tel"
+                    inputMode="numeric"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                     placeholder="3001234567"
                     required
                     className="flex-1 rounded-xl px-4 py-3 text-sm outline-none"
