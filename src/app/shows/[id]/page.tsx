@@ -46,7 +46,7 @@ function CancellationModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function PackageCard({ pkg }: { pkg: ShowPackage }) {
+function PackageCard({ pkg, musicianId }: { pkg: ShowPackage; musicianId: string }) {
   const [expanded, setExpanded] = useState(false);
   const SHORT = 120;
   const isLong = pkg.description.length > SHORT;
@@ -82,12 +82,13 @@ function PackageCard({ pkg }: { pkg: ShowPackage }) {
         )}
       </p>
 
-      <button
-        className="w-full py-2.5 rounded-full text-sm font-semibold"
+      <Link
+        href={`/reserva/${musicianId}/${pkg.id}`}
+        className="block w-full py-2.5 rounded-full text-sm font-semibold text-center"
         style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
       >
         Reserva ahora
-      </button>
+      </Link>
     </div>
   );
 }
@@ -241,7 +242,7 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {musician.packages.map((pkg) => (
-                <PackageCard key={pkg.id} pkg={pkg} />
+                <PackageCard key={pkg.id} pkg={pkg} musicianId={musician.id} />
               ))}
             </div>
           </section>
