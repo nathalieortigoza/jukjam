@@ -11,6 +11,7 @@ import LoginModal from "@/components/LoginModal";
 import RegisterModal from "@/components/RegisterModal";
 import { useAuth } from "@/context/AuthContext";
 import { MUSICIANS, formatCOP, ShowPackage } from "@/data/musicians";
+import { getReviewsForMusician } from "@/data/reviews";
 
 function CancellationModal({ onClose }: { onClose: () => void }) {
   return (
@@ -108,6 +109,11 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
   const [authModal, setAuthModal] = useState<"login" | "register" | null>(null);
   const [pendingPkgId, setPendingPkgId] = useState<string | null>(null);
   const [following, setFollowing] = useState(false);
+  const [localReviews, setLocalReviews] = useState<ReturnType<typeof getReviewsForMusician>>([]);
+
+  useEffect(() => {
+    setLocalReviews(getReviewsForMusician(id));
+  }, [id]);
 
   useEffect(() => {
     const stored: string[] = JSON.parse(localStorage.getItem("jukjam_following") ?? "[]");
@@ -323,35 +329,35 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
             <h2 className="text-xl font-semibold mb-5" style={{ color: "var(--color-on-surface)" }}>
               Comentarios
             </h2>
-            {musician.reviews.length === 0 ? (
-              <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>
-                Aún no hay reseñas. ¡Sé el primero en contratar a {musician.name}!
-              </p>
-            ) : (
-              <div className="space-y-4">
-                {musician.reviews.map((r) => (
-                  <div
-                    key={r.id}
-                    className="rounded-2xl p-5"
-                    style={{ backgroundColor: "var(--color-surface)" }}
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
-                        style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
-                      >
-                        {r.buyerInitials}
+            {(() => {
+              const allReviews = [
+                ...localReviews.map((r) => ({ ...r, isLocal: true })),
+                ...musician.reviews.map((r) => ({ ...r, isLocal: false })),
+              ];
+              if (allReviews.length === 0) return (
+                <p className="text-sm" style={{ color: "var(--color-on-surface-muted)" }}>
+                  Aún no hay reseñas. ¡Sé el primero en contratar a {musician.name}!
+                </p>
+              );
+              return (
+                <div className="space-y-4">
+                  {allReviews.map((r) => (
+                    <div key={r.id} className="rounded-2xl p-5" style={{ backgroundColor: "var(--color-surface)" }}>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shrink-0" style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}>
+                          {r.buyerInitials}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium" style={{ color: "var(--color-on-surface)" }}>{r.buyerName}</p>
+                          <p className="text-xs" style={{ color: "var(--color-on-surface-muted)" }}>{"⭐".repeat(r.rating)} · {r.date}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium" style={{ color: "var(--color-on-surface)" }}>{r.buyerName}</p>
-                        <p className="text-xs" style={{ color: "var(--color-on-surface-muted)" }}>{"⭐".repeat(r.rating)} · {r.date}</p>
-                      </div>
+                      {r.text && <p className="text-sm leading-relaxed" style={{ color: "var(--color-on-surface-muted)" }}>{r.text}</p>}
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: "var(--color-on-surface-muted)" }}>{r.text}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              );
+            })()}
           </section>
 
           {/* Políticas */}

@@ -9,6 +9,7 @@ import MusicianCard from "@/components/MusicianCard";
 import { useAuth } from "@/context/AuthContext";
 import { formatCOP, MUSICIANS } from "@/data/musicians";
 import { Booking, BookingStatus, getBookings, cancelBooking, seedMockBookings } from "@/data/bookings";
+import { saveReview, hasReviewed, getReviews } from "@/data/reviews";
 
 const EVENT_TABS: { key: BookingStatus; label: string }[] = [
   { key: "pendiente",  label: "Pendientes"  },
@@ -151,7 +152,131 @@ function CancelModal({ booking, onConfirm, onClose }: {
   );
 }
 
-function EventCard({ booking, onCancel }: { booking: Booking; onCancel: () => void }) {
+function StarPicker({ value, onChange }: { value: number; onChange: (n: number) => void }) {
+  const [hovered, setHovered] = useState(0);
+  return (
+    <div className="flex gap-2">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <button
+          key={n}
+          type="button"
+          onClick={() => onChange(n)}
+          onMouseEnter={() => setHovered(n)}
+          onMouseLeave={() => setHovered(0)}
+          style={{ fontSize: 36, lineHeight: 1, color: n <= (hovered || value) ? "#F5A623" : "var(--color-surface-elevated)", transition: "color 0.1s", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+        >
+          ★
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ReviewModal({ booking, onClose, onDone }: {
+  booking: Booking; onClose: () => void; onDone: () => void;
+}) {
+  const { user } = useAuth();
+  const [rating, setRating] = useState(0);
+  const [text, setText] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+
+  const handleSubmit = () => {
+    const name = user?.name ?? "Anónimo";
+    const initials = name.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase();
+    saveReview({
+      id: `rev-${Date.now()}`,
+      bookingId: booking.id,
+      musicianId: booking.musicianId,
+      buyerName: name,
+      buyerInitials: initials,
+      rating,
+      text,
+      date: new Date().toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" }),
+    });
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+
+      <div className="relative w-full max-w-3xl rounded-2xl flex" style={{ backgroundColor: "var(--color-surface)", minHeight: "480px", overflow: "hidden" }}>
+        {/* Left panel */}
+        <div className="hidden md:flex relative w-2/5 shrink-0 flex-col justify-end p-8">
+          <Image src={booking.musicianPhoto} alt={booking.musicianName} fill className="object-cover object-center" sizes="320px" />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(11,13,31,0.95) 0%, rgba(47,82,223,0.3) 60%, transparent 100%)" }} />
+          <div className="relative z-10">
+            <p className="text-2xl font-bold leading-snug mb-1" style={{ color: "#fff" }}>{booking.musicianName}</p>
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>{booking.eventName}</p>
+          </div>
+        </div>
+
+        {/* Right panel */}
+        <div className="flex-1 flex flex-col justify-center px-8 py-10">
+          <button onClick={onClose} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full transition-opacity hover:opacity-70" style={{ color: "var(--color-on-surface-muted)", backgroundColor: "var(--color-surface-elevated)" }}>×</button>
+
+          {!submitted ? (
+            <>
+              <h2 className="text-2xl font-bold mb-2" style={{ color: "var(--color-on-surface)" }}>¿Cómo fue el show?</h2>
+              <p className="text-sm mb-8" style={{ color: "var(--color-on-surface-muted)" }}>Califica cómo fue tu evento con la banda.</p>
+
+              <div className="mb-6">
+                <StarPicker value={rating} onChange={setRating} />
+              </div>
+
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-medium" style={{ color: "var(--color-on-surface-muted)" }}>Haz una reseña <span style={{ fontWeight: 400 }}>(opcional)</span></label>
+                  <span className="text-xs" style={{ color: wordCount > 120 ? "#BE1F3A" : "var(--color-on-surface-muted)" }}>{wordCount}/120 palabras</span>
+                </div>
+                <textarea
+                  value={text}
+                  onChange={(e) => {
+                    const words = e.target.value.trim() === "" ? [] : e.target.value.trim().split(/\s+/);
+                    if (words.length <= 120) setText(e.target.value);
+                  }}
+                  placeholder="Cuéntales a otros compradores cómo fue tu experiencia…"
+                  rows={4}
+                  className="w-full rounded-xl px-4 py-3 text-sm outline-none resize-none"
+                  style={{ backgroundColor: "var(--color-surface-elevated)", color: "var(--color-on-surface)" }}
+                />
+              </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={rating === 0}
+                className="w-full py-3.5 rounded-full text-sm font-semibold mb-3 transition-opacity hover:opacity-90 disabled:opacity-40"
+                style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
+              >
+                Siguiente
+              </button>
+              <button onClick={onClose} className="w-full text-sm py-2 transition-opacity hover:opacity-70" style={{ color: "var(--color-on-surface-muted)" }}>
+                Saltar por ahora
+              </button>
+            </>
+          ) : (
+            <div className="text-center">
+              <div className="text-5xl mb-6">🎉</div>
+              <h2 className="text-2xl font-bold mb-3" style={{ color: "var(--color-on-surface)" }}>¡Tu calificación<br />ha sido enviada!</h2>
+              <p className="text-sm mb-10" style={{ color: "var(--color-on-surface-muted)" }}>Gracias por compartir tu experiencia con la comunidad Jukjam.</p>
+              <Link
+                href="/shows"
+                onClick={onDone}
+                className="inline-block w-full py-3.5 rounded-full text-sm font-semibold text-center"
+                style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
+              >
+                Explorar artistas
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EventCard({ booking, onCancel, onReview, reviewed }: { booking: Booking; onCancel: () => void; onReview: () => void; reviewed: boolean }) {
   const st = STATUS_STYLES[booking.status];
   return (
     <div style={{ backgroundColor: "var(--color-surface)", borderRadius: 16, padding: 20, borderLeft: `4px solid ${st.color}` }}>
@@ -185,6 +310,11 @@ function EventCard({ booking, onCancel }: { booking: Booking; onCancel: () => vo
             Cancelar
           </button>
         )}
+        {booking.status === "completado" && (
+          reviewed
+            ? <span style={{ fontSize: 12, color: "#00C574" }}>✓ Reseñado</span>
+            : <button onClick={onReview} style={{ fontSize: 12, padding: "6px 16px", borderRadius: 999, border: "1px solid rgba(47,82,223,0.5)", color: "var(--color-primary)", backgroundColor: "transparent", cursor: "pointer" }}>Calificar</button>
+        )}
       </div>
     </div>
   );
@@ -199,6 +329,8 @@ export default function TabladerPage() {
   const [eventTab, setEventTab] = useState<BookingStatus>("pendiente");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [cancelTarget, setCancelTarget] = useState<Booking | null>(null);
+  const [reviewTarget, setReviewTarget] = useState<Booking | null>(null);
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
   const [followedIds, setFollowedIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -206,6 +338,7 @@ export default function TabladerPage() {
     seedMockBookings();
     setBookings(getBookings());
     setFollowedIds(JSON.parse(localStorage.getItem("jukjam_following") ?? "[]"));
+    setReviewedIds(new Set(getReviews().map((r) => r.bookingId)));
   }, [user]);
 
   const confirmCancel = () => {
@@ -290,7 +423,7 @@ export default function TabladerPage() {
               {filtered.length > 0 ? (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {filtered.map((b) => (
-                    <EventCard key={b.id} booking={b} onCancel={() => setCancelTarget(b)} />
+                    <EventCard key={b.id} booking={b} onCancel={() => setCancelTarget(b)} onReview={() => setReviewTarget(b)} reviewed={reviewedIds.has(b.id)} />
                   ))}
                 </div>
               ) : (
@@ -331,6 +464,16 @@ export default function TabladerPage() {
 
       {cancelTarget && (
         <CancelModal booking={cancelTarget} onConfirm={confirmCancel} onClose={() => setCancelTarget(null)} />
+      )}
+      {reviewTarget && (
+        <ReviewModal
+          booking={reviewTarget}
+          onClose={() => setReviewTarget(null)}
+          onDone={() => {
+            setReviewedIds(new Set(getReviews().map((r) => r.bookingId)));
+            setReviewTarget(null);
+          }}
+        />
       )}
     </>
   );
