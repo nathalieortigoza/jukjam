@@ -33,7 +33,7 @@ export default function ComoFunciona() {
       style={{
         backgroundColor: "var(--color-background)",
         padding: "80px 32px 72px",
-        fontFamily: "var(--font-inter), Inter, -apple-system, sans-serif",
+        fontFamily: "var(--font-quicksand), Inter, -apple-system, sans-serif",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -95,7 +95,7 @@ export default function ComoFunciona() {
 
         {/* Tagline */}
         <p style={{ fontSize: 13, color: "var(--color-on-surface-muted)", marginBottom: 24, textAlign: "center" }}>
-          Proceso 100% en línea &nbsp;·&nbsp; Sin filas &nbsp;·&nbsp; Sin complicaciones
+          Proceso 100% en línea &nbsp;·&nbsp; Sin complicaciones
         </p>
 
         {/* Cancellation note */}

@@ -12,43 +12,7 @@ import RegisterModal from "@/components/RegisterModal";
 import { useAuth } from "@/context/AuthContext";
 import { MUSICIANS, formatCOP, ShowPackage } from "@/data/musicians";
 import { getReviewsForMusician } from "@/data/reviews";
-
-function CancellationModal({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div
-        className="relative w-full max-w-md rounded-2xl p-8"
-        style={{ backgroundColor: "var(--color-surface)" }}
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-2xl leading-none"
-          style={{ color: "var(--color-on-surface-muted)" }}
-        >
-          ×
-        </button>
-        <h2 className="text-xl font-bold mb-6" style={{ color: "var(--color-on-surface)" }}>
-          Políticas de cancelación
-        </h2>
-        <ul className="space-y-4 text-sm leading-relaxed" style={{ color: "var(--color-on-surface-muted)" }}>
-          <li className="flex gap-3">
-            <span className="mt-0.5 shrink-0 text-base">✅</span>
-            <span>Si cancelas con más de 7 días de anticipación: te devolvemos el <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> del valor pagado.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="mt-0.5 shrink-0 text-base">⚠️</span>
-            <span>Si cancelas con menos de 7 días de anticipación: se aplica una penalización del 40%, por lo que se te devuelve el <strong style={{ color: "var(--color-on-surface)" }}>60%</strong> del valor pagado.</span>
-          </li>
-          <li className="flex gap-3">
-            <span className="mt-0.5 shrink-0 text-base">🎵</span>
-            <span>Si el músico cancela el show: te devolvemos el <strong style={{ color: "var(--color-on-surface)" }}>100%</strong> del valor pagado.</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-}
+import CancelPolicyModal from "@/components/CancelPolicyModal";
 
 function PackageCard({ pkg, onBook }: { pkg: ShowPackage; onBook: () => void }) {
   const [expanded, setExpanded] = useState(false);
@@ -381,7 +345,7 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
         </div>
       </main>
 
-      {showCancellation && <CancellationModal onClose={() => setShowCancellation(false)} />}
+      {showCancellation && <CancelPolicyModal onClose={() => setShowCancellation(false)} />}
       {authModal === "login" && (
         <LoginModal onClose={() => setAuthModal(null)} onSwitchToRegister={() => setAuthModal("register")} />
       )}

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Quicksand } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const quicksand = Quicksand({ subsets: ["latin"], variable: "--font-quicksand", weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
   title: "Jukjam — Música alternativa para tus eventos",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="h-full antialiased">
-      <body className={`${inter.className} ${inter.variable} min-h-full flex flex-col`}>
+      <body className={`${quicksand.className} ${quicksand.variable} min-h-full flex flex-col`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

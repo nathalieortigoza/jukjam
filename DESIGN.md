@@ -24,27 +24,27 @@ gradients:
   gradient-ocean: "linear-gradient(135deg, #3B6CF0 0%, #1B2E9C 100%)"
 typography:
   h1:
-    fontFamily: "Inter, SF Pro Display, -apple-system, sans-serif"
+    fontFamily: "Quicksand, -apple-system, sans-serif"
     fontSize: 28px
     fontWeight: 700
     lineHeight: 1.2
   h2:
-    fontFamily: "Inter, SF Pro Display, -apple-system, sans-serif"
+    fontFamily: "Quicksand, -apple-system, sans-serif"
     fontSize: 22px
     fontWeight: 600
     lineHeight: 1.3
   body-md:
-    fontFamily: "Inter, SF Pro Text, -apple-system, sans-serif"
+    fontFamily: "Quicksand, -apple-system, sans-serif"
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
   body-sm:
-    fontFamily: "Inter, SF Pro Text, -apple-system, sans-serif"
+    fontFamily: "Quicksand, -apple-system, sans-serif"
     fontSize: 14px
     fontWeight: 400
     lineHeight: 1.4
   label-caps:
-    fontFamily: "Inter, SF Pro Text, -apple-system, sans-serif"
+    fontFamily: "Quicksand, -apple-system, sans-serif"
     fontSize: 11px
     fontWeight: 600
     letterSpacing: 0.08em
