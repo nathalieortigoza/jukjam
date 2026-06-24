@@ -147,7 +147,7 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
               className="w-full py-4 rounded-full text-sm font-semibold border"
               style={{ borderColor: "rgba(255,255,255,0.2)", color: "var(--color-on-surface)", backgroundColor: "transparent" }}
             >
-              Ya tengo cuenta — Ingresa
+              Ya tengo cuenta. Ingresa
             </button>
           </div>
         </div>

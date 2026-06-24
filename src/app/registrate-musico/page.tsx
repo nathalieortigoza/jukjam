@@ -139,7 +139,7 @@ export default function RegistrateMusico() {
             <Field>
               <Label>Descripción del proyecto *</Label>
               <p style={{ fontSize: 12, color: "var(--color-on-surface-muted)", marginBottom: 8, lineHeight: 1.5 }}>
-                Describe tu propuesta de valor y los tipos de shows que ofreces — géneros, formato (solista, dúo, banda), tamaño de evento, etc.
+                Describe tu propuesta de valor y los tipos de shows que ofreces: géneros, formato (solista, dúo, banda), tamaño de evento, etc.
               </p>
               <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} required rows={5} placeholder="Somos un trío de jazz fusión con más de 8 años en escena. Tocamos en eventos corporativos, bodas y espacios íntimos…" style={{ ...fieldStyle, resize: "none" }} />
             </Field>
@@ -181,9 +181,8 @@ export default function RegistrateMusico() {
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[
                   { icon: "/icons/sing.png",   text: "Recibe contratos sin hacer mercadeo" },
-                  { icon: "/icons/money.png",  text: "Precios fijos — sin regateos ni malentendidos" },
+                  { icon: "/icons/money.png",  text: "Precios fijos sin regateos ni malentendidos" },
                   { icon: "/icons/bell.png",   text: "Pago garantizado al confirmar el show con tu código" },
-                  { icon: "/icons/info.png",   text: "Comisión del 10% solo al completar el servicio" },
                 ].map(({ icon, text }) => (
                   <div key={text} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                     <Image src={icon} alt="" width={24} height={24} style={{ objectFit: "contain", flexShrink: 0, marginTop: 1 }} />

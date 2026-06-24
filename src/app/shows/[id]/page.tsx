@@ -121,6 +121,10 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
   }, [id]);
 
   const toggleFollow = () => {
+    if (!user) {
+      setAuthModal("login");
+      return;
+    }
     const stored: string[] = JSON.parse(localStorage.getItem("jukjam_following") ?? "[]");
     const updated = following
       ? stored.filter((x) => x !== id)
@@ -198,11 +202,11 @@ export default function MusicianProfile({ params }: { params: Promise<{ id: stri
                   className="px-5 py-2 rounded-full text-sm font-semibold border transition-all hover:opacity-80"
                   style={{
                     borderColor: "var(--color-primary)",
-                    color: following ? "var(--color-on-primary)" : "var(--color-primary)",
-                    backgroundColor: following ? "var(--color-primary)" : "transparent",
+                    color: (user && following) ? "var(--color-on-primary)" : "var(--color-primary)",
+                    backgroundColor: (user && following) ? "var(--color-primary)" : "transparent",
                   }}
                 >
-                  {following ? "Siguiendo" : "Seguir"}
+                  {(user && following) ? "Siguiendo" : "Seguir"}
                 </button>
               </div>
             </div>
