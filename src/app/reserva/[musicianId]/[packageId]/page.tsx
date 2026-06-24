@@ -414,65 +414,66 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
 
   // ── Step 4: confirmación ──────────────────────────────────────
   return (
-    <div className="flex flex-col items-center text-center max-w-lg mx-auto py-8">
-      <div className="relative w-24 h-24 rounded-full overflow-hidden mb-6" style={{ outline: "4px solid var(--color-primary)", outlineOffset: "2px" }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 480, margin: "0 auto", padding: "40px 0 80px" }}>
+
+      {/* Musician photo */}
+      <div style={{ position: "relative", width: 96, height: 96, borderRadius: "50%", overflow: "hidden", marginBottom: 28, outline: "4px solid var(--color-primary)", outlineOffset: 3 }}>
         <Image src={musician.photos[0]} alt={musician.name} fill className="object-cover" sizes="96px" />
       </div>
 
-      <Image src="/icons/party.png" alt="" width={64} height={64} style={{ objectFit: "contain", marginBottom: 16 }} />
-      <h2 className="text-3xl font-bold mb-2" style={{ color: "var(--color-on-background)" }}>
-        ¡Felicitaciones!
+      <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8, color: "var(--color-on-background)" }}>
+        ¡Reserva confirmada!
       </h2>
-      <p className="text-sm mb-8" style={{ color: "var(--color-on-surface-muted)" }}>
-        Tu reserva está confirmada. Revisa tu correo y WhatsApp.
+      <p style={{ fontSize: 14, marginBottom: 32, color: "var(--color-on-surface-muted)", lineHeight: 1.5 }}>
+        {musician.name} · {pkg.name}
       </p>
 
-      <div
-        className="w-full rounded-2xl overflow-hidden mb-6"
-        style={{ backgroundColor: "var(--color-surface)" }}
-      >
+      {/* Details */}
+      <div style={{ width: "100%", borderRadius: 20, overflow: "hidden", marginBottom: 16, backgroundColor: "var(--color-surface)" }}>
         {(
           [
-            { icon: "/icons/musician.png", label: "Músico",  val: musician.name   },
-            { icon: "/icons/sing.png",     label: "Show",    val: pkg.name         },
-            { icon: "/icons/calendar.png", label: "Fecha",   val: formatDate(date) },
-            { icon: "/icons/call.png",     label: "Hora",    val: formatTime(time) },
-            { icon: "/icons/info.png",     label: "Lugar",   val: address          },
+            { icon: "/icons/calendar.png", label: "Fecha",  val: formatDate(date) },
+            { icon: "/icons/hora.png",     label: "Hora",   val: formatTime(time) },
+            { icon: "/icons/info.png",     label: "Lugar",  val: address          },
+            { icon: "/icons/money.png",    label: "Valor",  val: formatCOP(pkg.price) },
           ]
         ).map(({ icon, label, val }, i, arr) => (
           <div
             key={label}
-            className="flex gap-4 px-6 py-4"
-            style={{ borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", alignItems: "center" }}
+            style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 24px", borderBottom: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}
           >
-            <Image src={icon} alt="" width={18} height={18} style={{ objectFit: "contain", flexShrink: 0, opacity: 0.6 }} />
-            <span className="text-sm w-20 shrink-0" style={{ color: "var(--color-on-surface-muted)" }}>{label}</span>
-            <span className="text-sm font-medium" style={{ color: "var(--color-on-surface)" }}>{val}</span>
+            <Image src={icon} alt="" width={18} height={18} style={{ objectFit: "contain", flexShrink: 0, opacity: 0.55 }} />
+            <span style={{ fontSize: 13, width: 64, flexShrink: 0, color: "var(--color-on-surface-muted)", textAlign: "left" }}>{label}</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: "var(--color-on-surface)", textAlign: "left" }}>{val}</span>
           </div>
         ))}
       </div>
 
-      <div
-        className="w-full rounded-2xl p-6 mb-8"
-        style={{ backgroundColor: "var(--color-surface)" }}
-      >
-        <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "var(--color-on-surface-muted)" }}>
+      {/* Código */}
+      <div style={{ width: "100%", borderRadius: 20, padding: "24px", marginBottom: 32, backgroundColor: "var(--color-surface)", border: "1px solid rgba(255,255,255,0.07)" }}>
+        <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12, color: "var(--color-on-surface-muted)" }}>
           Código de confirmación
         </p>
-        <p className="text-4xl font-bold tracking-[0.3em]" style={{ color: "var(--color-primary)" }}>
+        <p style={{ fontSize: 42, fontWeight: 800, letterSpacing: "0.3em", color: "var(--color-primary)", marginBottom: 12 }}>
           {confirmCode}
         </p>
-        <p className="text-xs mt-3" style={{ color: "var(--color-on-surface-muted)" }}>
+        <p style={{ fontSize: 12, color: "var(--color-on-surface-muted)", lineHeight: 1.5 }}>
           Comparte este código con el músico al inicio del show para liberar el pago.
         </p>
       </div>
 
+      {/* CTAs */}
       <Link
         href="/tablero"
-        className="w-full py-3 rounded-full text-sm font-semibold text-center"
-        style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
+        style={{ display: "block", width: "100%", padding: "16px 0", borderRadius: 999, fontSize: 15, fontWeight: 700, textAlign: "center", backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)", marginBottom: 12 }}
       >
-        Ir a mis eventos
+        Ver mis eventos
+      </Link>
+      <Link
+        href="/shows"
+        style={{ display: "block", width: "100%", padding: "14px 0", borderRadius: 999, fontSize: 14, fontWeight: 500, textAlign: "center", backgroundColor: "transparent", color: "var(--color-on-surface-muted)", border: "1px solid rgba(255,255,255,0.12)" }}
+      >
+        Explorar más artistas
       </Link>
     </div>
   );
