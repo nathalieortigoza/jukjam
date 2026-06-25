@@ -59,7 +59,7 @@ export default function HeroSearch() {
           className="text-4xl md:text-5xl font-bold mb-4 leading-tight"
           style={{ color: "var(--color-on-background)" }}
         >
-          ¿Cuál va a ser tu siguiente show?
+          ¿Qué show quieres vivir?
         </h1>
         <p className="text-base mb-10" style={{ color: "var(--color-on-surface-muted)" }}>
           Encuentra y contrata músicos alternativos en Bogotá
