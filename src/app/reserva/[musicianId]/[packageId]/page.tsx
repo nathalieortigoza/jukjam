@@ -388,7 +388,7 @@ function BookingContent({ musicianId, packageId }: { musicianId: string; package
                     status: "pendiente",
                     createdAt: new Date().toISOString().split("T")[0],
                   });
-                  setStep(4);
+                  window.location.href = "https://checkout.wompi.co/l/test_VPOS_FMZ9xu";
                 }}
                 className="w-full py-4 rounded-full text-base font-bold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: "#00C574", color: "#fff" }}
